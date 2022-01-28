@@ -1,5 +1,7 @@
 import type { PluginBuild, Loader } from "esbuild";
 import { CompileOptions } from "./compile";
+import {loadConfig} from 'relay-config'
+import {sep} from 'path'
 
 export interface PluginOptions {
   artifactDirectory?: string;
@@ -21,8 +23,7 @@ export function setup(
   let relayConfig: any;
   try {
     process.chdir(build.initialOptions.absWorkingDir);
-    relayConfig =
-      typeof require === "function" ? require("relay-config").loadConfig() : {};
+    relayConfig = loadConfig() || {};
   } catch (_err) {
   } finally {
     process.chdir(currentCwd);
@@ -38,7 +39,7 @@ export function setup(
 
   let filter: RegExp;
   if (relayConfig.extensions && relayConfig.extensions.length) {
-    filter = new RegExp(`/\.(${relayConfig.extensions.join("|")})/`);
+    filter = new RegExp(`${sep}*.(${relayConfig.extensions.join("|")})`);
   } else if (relayConfig.language == "typescript") {
     filter = /\.tsx/;
   } else {
