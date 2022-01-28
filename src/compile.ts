@@ -4,6 +4,7 @@ import * as path from "path";
 
 export interface CompileOptions {
   artifactDirectory: string;
+  useRelativePathToFile?: boolean;
   condition?: string;
   devMode?: boolean;
   module?: "cjs" | "esm";
@@ -62,7 +63,7 @@ export function compile(
     const importFile = `${name}.graphql${opts.suffix}`;
     const importPath = getRelativeImportPath(
       file,
-      opts.artifactDirectory,
+      opts.useRelativePathToFile ? path.resolve(path.dirname(file), opts.artifactDirectory) : opts.artifactDirectory,
       importFile
     );
 
