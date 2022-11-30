@@ -13,7 +13,7 @@ test("use relay-config to automatically detect configuration", () => {
     {}
   );
 
-  expect(options.filter.toString()).toBe("/\\/.(js)\\//");
+  expect(options.filter.toString()).toBe("/\\/*.(js)\/");
   expect(compileOptions.artifactDirectory).toBe("src/__graphql__");
 });
 
